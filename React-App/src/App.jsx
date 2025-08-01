@@ -1,35 +1,54 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from 'react';
+import './App.css';
+import { WorkflowGraph } from './components/WorkflowGraph';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [projectInput, setProjectInput] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = () => {
+    setSubmitted(true);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
+    <div className="container">
+      <h1 className="title">AgentPlanner</h1>
+
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+        <label htmlFor="project-input" className="label">Enter your project idea:</label>
+        <textarea
+          id="project-input"
+          className="textarea"
+          value={projectInput}
+          onChange={(e) => setProjectInput(e.target.value)}
+          placeholder="e.g., Build a chatbot web app..."
+        />
+        <button onClick={handleSubmit} className="button">Generate Plan</button>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+
+      {submitted && (
+        <div className="grid">
+          <div className="card">
+            <h2 className="subtitle">📋 Task Summary</h2>
+            <pre className="summary">
+1. Define project scope and requirements
+2. Design UI wireframes
+3. Set up backend (FastAPI)
+4. Implement frontend (React + CSS)
+5. Integrate agents via API
+6. Visualize task dependencies
+7. Deploy and test
+            </pre>
+          </div>
+
+          <div className="card">
+            <h2 className="subtitle">🕸️ Workflow Visualization</h2>
+            <WorkflowGraph />
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
 
-export default App
+export default App;
